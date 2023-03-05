@@ -7,5 +7,5 @@ defmodule HelloWeb.HelloController do
 
   def show(conn, %{"messenger" => messenger}) do
     render(conn, :show, messenger: messenger)
-  end  
+  end
 end
