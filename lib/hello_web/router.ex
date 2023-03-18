@@ -26,6 +26,7 @@ defmodule HelloWeb.Router do
     resources "/posts", PostController, only: [:index, :show]
     resources "/comments", CommentController, except: [:delete]
     resources "/reviews", ReviewController
+    resources "/products", ProductController
   end
 
   scope "/admin", HelloWeb.Admin do
