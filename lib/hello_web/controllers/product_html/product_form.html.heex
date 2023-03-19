@@ -7,7 +7,7 @@
   <.input field={f[:price]} type="number" label="Price" step="any" />
   <.input field={f[:views]} type="number" label="Views" />
 
-  <%= category_select f, @changeset %>
+  <%= category_select(f, @changeset) %>
 
   <:actions>
     <.button>Save Product</.button>

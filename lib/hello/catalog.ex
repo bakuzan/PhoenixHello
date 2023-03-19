@@ -38,7 +38,7 @@ defmodule Hello.Catalog do
   """
   def get_product!(id) do
     Product |> Repo.get!(id) |> Repo.preload(:categories)
-  end  
+  end
 
   @doc """
   Creates a product.
@@ -103,17 +103,18 @@ defmodule Hello.Catalog do
   """
   def change_product(%Product{} = product, attrs \\ %{}) do
     categories = list_categories_by_id(attrs["category_ids"])
-    
+
     product
-      |> Repo.preload(:categories)
-      |> Product.changeset(attrs)
-      |> Ecto.Changeset.put_assoc(:categories, categories)
+    |> Repo.preload(:categories)
+    |> Product.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:categories, categories)
   end
 
   def list_categories_by_id(nil), do: []
+
   def list_categories_by_id(category_ids) do
     Repo.all(from c in Category, where: c.id in ^category_ids)
-  end  
+  end
 
   def inc_page_views(%Product{} = product) do
     {1, [%Product{views: views}]} =
