@@ -17,5 +17,5 @@ defmodule HelloWeb.CartController do
         |> put_flash(:error, "There was an error updating your cart")
         |> redirect(to: ~p"/cart")
     end
-  end  
+  end
 end

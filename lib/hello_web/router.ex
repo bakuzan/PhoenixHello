@@ -79,7 +79,7 @@ defmodule HelloWeb.Router do
   scope "/api", HelloWeb do
     pipe_through :api
     resources "/urls", UrlController, except: [:new, :edit]
-  end  
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:hello, :dev_routes) do

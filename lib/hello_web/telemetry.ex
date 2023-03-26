@@ -37,7 +37,8 @@ defmodule HelloWeb.Telemetry do
         unit: {:native, :millisecond}
       ),
       summary("phoenix.router_dispatch.stop.duration",
-        tags: [:route],
+        tags: [:method, :route],
+        tag_values: &get_and_put_http_method/1,
         unit: {:native, :millisecond}
       ),
       summary("phoenix.socket_connected.duration",
@@ -73,20 +74,45 @@ defmodule HelloWeb.Telemetry do
         description:
           "The time the connection spent waiting before being checked out for the query"
       ),
+      summary("phoenix.live_view.mount.stop.duration",
+        unit: {:native, :millisecond},
+        tags: [:view, :connected?],
+        tag_values: &live_view_metric_tag_values/1
+      ),
 
       # VM Metrics
       summary("vm.memory.total", unit: {:byte, :kilobyte}),
       summary("vm.total_run_queue_lengths.total"),
       summary("vm.total_run_queue_lengths.cpu"),
-      summary("vm.total_run_queue_lengths.io")
+      summary("vm.total_run_queue_lengths.io"),
+
+      # My Metrics
+      last_value("hello.users.total"),
+      last_value("hello.my_server.memory", unit: :byte),
+      last_value("hello.my_server.message_queue_len"),
+      summary("hello.my_server.call.stop.duration"),
+      counter("hello.my_server.call.exception")
     ]
   end
 
+  defp get_and_put_http_method(%{conn: %{method: method}} = metadata) do
+    Map.put(metadata, :method, method)
+  end
+
+  defp live_view_metric_tag_values(metadata) do
+    metadata
+    |> Map.put(:view, inspect(metadata.socket.view))
+    |> Map.put(:connected?, get_connection_status(Phoenix.LiveView.connected?(metadata.socket)))
+  end
+
+  defp get_connection_status(true), do: "Connected"
+  defp get_connection_status(false), do: "Disconnected"
+
   defp periodic_measurements do
     [
-      # A module, function and arguments to be invoked periodically.
-      # This function must call :telemetry.execute/3 and a metric must be added above.
-      # {HelloWeb, :count_users, []}
+      {Hello, :measure_users, []},
+      {:process_info,
+       event: [:hello, :my_server], name: Hello.MyServer, keys: [:message_queue_len, :memory]}
     ]
   end
 end

@@ -10,6 +10,7 @@ defmodule Hello.Application do
     children = [
       # Start the Telemetry supervisor
       HelloWeb.Telemetry,
+      {Hello.MyServer, fn -> "Hello, world!" end},
       # Start the Ecto repository
       Hello.Repo,
       # Start the PubSub system

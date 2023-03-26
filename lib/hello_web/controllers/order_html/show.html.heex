@@ -7,15 +7,17 @@
   </li>
 
   <li :for={item <- @order.line_items}>
-    <%= item.product.title %>
-    (<%= item.quantity %>) - <%= HelloWeb.CartHTML.currency_to_str(item.price) %>
+    <%= item.product.title %> (<%= item.quantity %>) - <%= HelloWeb.CartHTML.currency_to_str(
+      item.price
+    ) %>
   </li>
 
   <li>
     <strong>Total price:</strong>
     <%= HelloWeb.CartHTML.currency_to_str(@order.total_price) %>
   </li>
-
 </ul>
 
-<span><.link href={~p"/cart"}>Back</.link></span>
+<span>
+  <.link href={~p"/cart"}>Back</.link>
+</span>

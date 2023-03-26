@@ -7,7 +7,7 @@ defmodule Hello.Orders.Order do
     field :user_uuid, Ecto.UUID
 
     has_many :line_items, Hello.Orders.LineItem
-    has_many :products, through: [:line_items, :product]    
+    has_many :products, through: [:line_items, :product]
 
     timestamps()
   end

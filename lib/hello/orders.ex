@@ -38,7 +38,7 @@ defmodule Hello.Orders do
   def get_order!(user_uuid, id) do
     Order
     |> Repo.get_by!(id: id, user_uuid: user_uuid)
-    |> Repo.preload([line_items: [:product]])
+    |> Repo.preload(line_items: [:product])
   end
 
   @doc """
@@ -228,5 +228,5 @@ defmodule Hello.Orders do
       {:ok, %{order: order}} -> {:ok, order}
       {:error, name, value, _changes_so_far} -> {:error, {name, value}}
     end
-  end  
+  end
 end
